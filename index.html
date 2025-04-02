@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lector Interactivo Mejorado</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="claire.png" type="image/png">
+</head>
+<body class="theme-sepia"> <div class="position-fixed top-0 start-0 p-3" style="z-index: 1100;">
+        <button class="btn btn-outline-secondary btn-menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#menuDesplegable" aria-expanded="false" aria-controls="menuDesplegable">
+            <i class="bi bi-list"></i> <span class="d-none d-sm-inline">Menú</span>
+        </button>
+    </div>
+
+    <div class="collapse" id="menuDesplegable">
+        <div class="menu-content container py-3">
+            <h5 class="mb-3"><i class="bi bi-gear-wide-connected"></i> Opciones de Carga y Visualización</h5>
+
+            <div class="row mb-3 gy-3">
+                <div class="col-md-6 file-input">
+                    <label for="audioFile" class="form-label"><i class="bi bi-file-earmark-music"></i> Cargar Audio (MP3):</label>
+                    <input type="file" id="audioFile" accept="audio/mpeg" class="form-control">
+                    <div id="audioFileStatus" class="form-text file-status-message"></div>
+                </div>
+                <div class="col-md-6 file-input">
+                    <label for="vttFile" class="form-label"><i class="bi bi-file-earmark-text"></i> Cargar Subtítulos (VTT):</label>
+                    <input type="file" id="vttFile" accept=".vtt" class="form-control">
+                    <div id="vttFileStatus" class="form-text file-status-message"></div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-12 d-flex justify-content-start align-items-center flex-wrap">
+                    <span class="me-3 mb-2 mb-md-0"><i class="bi bi-palette"></i> Temas:</span>
+                    <div>
+                        <button class="btn btn-sm btn-outline-secondary me-1" id="btnSepia" title="Tema Sepia"><i class="bi bi-brightness-high-fill"></i> Sepia</button>
+                        <button class="btn btn-sm btn-outline-secondary me-1" id="btnRose" title="Tema Rosa"><i class="bi bi-heart-fill"></i> Rosa</button>
+                        <button class="btn btn-sm btn-outline-secondary" id="btnDark" title="Tema Oscuro"><i class="bi bi-moon-fill"></i> Oscuro</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                 <div class="col-12 text-end">
+                     <button class="btn btn-sm btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#menuDesplegable" aria-expanded="true" aria-controls="menuDesplegable">
+                         Cerrar Menú <i class="bi bi-chevron-up"></i>
+                     </button>
+                 </div>
+             </div>
+        </div>
+    </div>
+
+    <div class="container-fluid main-container">
+        <div class="row">
+            <div class="col-lg-9 col-md-12 mb-3">
+                <div class="left-panel">
+                    <div id="subtitleContainer" class="p-3 p-md-4">
+                        <p class="text-muted initial-message">Carga un archivo de audio y un archivo VTT para comenzar.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 d-none d-lg-block">
+                 <div class="right-panel sticky-top">
+                     <div id="dictionaryContainer" class="p-3">
+                         <div class="text-center text-muted p-4 initial-dict-message">
+                             <i class="bi bi-book-half display-5 mb-3"></i>
+                             <p>
+                                 Haz clic izquierdo en una palabra para ver su definición aquí.<br><br>
+                                 Mantén pulsado (móvil) o haz clic derecho (escritorio) en una palabra para reproducir el audio desde ese punto.
+                             </p>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="custom-player shadow">
+        <img src="claire.png" class="cover-art flex-shrink-0" alt="Cover Art">
+        <div class="player-details flex-shrink-1">
+            <p class="title">Carga un audio</p>
+            <p class="artist d-none d-md-block">Archivo no cargado</p>
+        </div>
+
+        <div class="player-controls-wrapper flex-grow-1">
+            <div class="player-timeline d-flex align-items-center w-100">
+                <span class="current-time">0:00</span>
+                <input type="range" class="timeline form-range mx-2 flex-grow-1" min="0" max="100" value="0" disabled>
+                <span class="total-duration">0:00</span>
+            </div>
+            <div class="player-main-controls d-flex justify-content-center align-items-center w-100">
+                 <div class="player-buttons">
+                     <button class="btn-prev" title="Retroceder 10s">
+                         <i class="bi bi-skip-backward-fill"></i>
+                     </button>
+                    <button class="btn-play-pause" title="Reproducir / Pausar">
+                        <i class="bi bi-play-fill"></i>
+                    </button>
+                    <button class="btn-next" title="Adelantar 10s">
+                        <i class="bi bi-skip-forward-fill"></i>
+                    </button>
+                     <button class="btn-repeat" title="Repetir">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </button>
+                </div>
+                 <div class="player-extras ms-auto">
+                     <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="playerSettingsDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Ajustes">
+                            <i class="bi bi-gear-fill"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="playerSettingsDropdown">
+                            <li><h6 class="dropdown-header">Velocidad</h6></li>
+                            <li><a class="dropdown-item speed-item" href="#" data-speed="0.5">0.5x</a></li>
+                            <li><a class="dropdown-item speed-item" href="#" data-speed="0.75">0.75x</a></li>
+                            <li><a class="dropdown-item speed-item" href="#" data-speed="1">1x (Normal)</a></li>
+                            <li><a class="dropdown-item speed-item" href="#" data-speed="1.25">1.25x</a></li>
+                            <li><a class="dropdown-item speed-item" href="#" data-speed="1.5">1.5x</a></li>
+                            <li><a class="dropdown-item speed-item" href="#" data-speed="2">2x</a></li>
+                             <li><hr class="dropdown-divider"></li>
+                             <li><h6 class="dropdown-header">Volumen</h6></li>
+                             <li>
+                                 <div class="px-2 py-1 d-flex align-items-center">
+                                     <i class="bi bi-volume-down-fill me-2"></i>
+                                     <input type="range" class="form-range volume-slider" id="volumeControl" min="0" max="1" step="0.05" value="1">
+                                     <i class="bi bi-volume-up-fill ms-2"></i>
+                                 </div>
+                             </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <audio id="audioPlayer" style="display: none;"></audio>
+    </div>
+
+    <div id="floatingDictionary" class="floating-dictionary shadow-lg">
+        <button type="button" class="btn-close close-float-dict" aria-label="Cerrar"></button>
+        <div id="floatingDictionaryContent">
+            </div>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay">
+         <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

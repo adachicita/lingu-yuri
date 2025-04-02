@@ -1,0 +1,841 @@
+/* ===== Variables y Resets ===== */
+:root {
+    --font-family-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-family-serif: "Georgia", serif; /* Fuente más legible para texto largo */
+
+    /* Colores Base (Sepia por defecto) */
+    --bg-color: #f4ecd8;              /* Fondo sepia claro */
+    --text-color: #5b4636;            /* Texto sepia oscuro */
+    --panel-bg: #fffaf0;              /* Fondo de panel ligeramente más claro (floral white) */
+    --panel-border: #e0d8c4;          /* Borde sepia suave */
+    --highlight-bg: rgba(188, 143, 143, 0.3); /* Resaltado (rosy brown semi-transparente) */
+    --highlight-text: #4b382a;        /* Texto resaltado más oscuro */
+    --link-color: #8b4513;            /* Enlace (saddle brown) */
+    --muted-color: #856d4b;           /* Texto atenuado (dark goldenrod apagado) */
+    --card-border: #eee5d1;           /* Borde tarjeta diccionario */
+    --header-border: #e0d8c4;         /* Borde cabecera diccionario */
+    --pos-color: #a0522d;             /* Color Part of Speech (sienna) */
+    --example-bg: #faf0e6;            /* Fondo ejemplo (linen) */
+    --example-color: #7a5c43;         /* Color texto ejemplo */
+    --error-bg: #fff0f0;              /* Fondo error rosado muy pálido */
+    --error-color: #a52a2a;           /* Color error (brown) */
+    --menu-bg: rgba(244, 236, 216, 0.9); /* Fondo menú semi-transparente */
+    --menu-border: #d4c8b0;           /* Borde menú */
+    --scrollbar-track: #eee5d1;       /* Track scrollbar */
+    --scrollbar-thumb: #c1a97c;       /* Thumb scrollbar */
+    --scrollbar-thumb-hover: #a0845e; /* Thumb scrollbar hover */
+    --player-bg: #3e2d2b;             /* Marrón oscuro para el reproductor */
+    --player-text: #f4ecd8;           /* Texto sepia claro para contraste */
+    --player-text-muted: #bfaea0;     /* Texto atenuado en reproductor */
+    --player-timeline-bg: #6f5e5c;    /* Fondo línea de tiempo */
+    --player-thumb-bg: #f4ecd8;       /* Bolita línea de tiempo */
+    --player-icon-hover: #ffffff;     /* Iconos hover más brillantes */
+    --word-loading-bg: rgba(139, 69, 19, 0.2); /* Saddle brown semi-transparente para carga palabra */
+}
+
+/* Tema Rose */
+.theme-rose {
+    --bg-color: rgb(255, 245, 250);
+    --text-color: rgb(50, 30, 40);
+    --panel-bg: rgb(255, 235, 245);
+    --panel-border: rgb(255, 215, 230);
+    --highlight-bg: rgba(235, 217, 253, 0.74);
+    --highlight-text: rgb(34, 34, 34);
+    --link-color: #d63384;
+    --muted-color: #a87082;
+    --card-border: rgb(255, 200, 220);
+    --header-border: rgb(255, 200, 220);
+    --pos-color: #d63384;
+    --example-bg: rgb(255, 220, 230);
+    --example-color: #a83d72;
+    --error-bg: rgb(255, 220, 230);
+    --error-color: #d63384;
+    --menu-bg: rgba(255, 235, 245, 0.9);
+    --menu-border: rgb(255, 215, 230);
+    --scrollbar-track: rgb(255, 235, 245);
+    --scrollbar-thumb: rgb(240, 190, 210);
+    --scrollbar-thumb-hover: rgb(214, 51, 132);
+    --word-loading-bg: rgba(214, 51, 132, 0.2);
+    /* Player se mantiene oscuro o temático */
+    /* --player-bg: #4a233a; */
+    /* --player-text: #ffe0f0; */
+    /* ...otros colores de player si se tematiza */
+}
+
+/* Tema Dark */
+.theme-dark {
+    --bg-color: rgb(14, 10, 22);
+    --text-color: rgb(235, 230, 240);
+    --panel-bg: rgb(22, 18, 32);
+    --panel-border: rgb(36, 30, 52);
+    --highlight-bg: rgba(98, 98, 98, 0.71);
+    --highlight-text: rgb(235, 230, 240);
+    --link-color: #9d7bf6;
+    --muted-color: rgb(160, 155, 180);
+    --card-border: rgb(60, 55, 75);
+    --header-border: rgb(60, 55, 75);
+    --pos-color: #9d7bf6;
+    --example-bg: rgb(40, 35, 55);
+    --example-color: rgb(180, 175, 200);
+    --error-bg: rgb(70, 65, 85);
+    --error-color: rgb(220, 100, 100);
+    --menu-bg: rgba(22, 18, 32, 0.9);
+    --menu-border: rgb(36, 30, 52);
+    --scrollbar-track: #212529;
+    --scrollbar-thumb: #495057;
+    --scrollbar-thumb-hover: #6c757d;
+    --word-loading-bg: rgba(157, 123, 246, 0.2);
+    /* Player ya es oscuro, se mantiene */
+    --player-bg: #212529;
+    --player-text: #ffffff;
+    --player-text-muted: #adb5bd;
+    --player-timeline-bg: #495057;
+    --player-thumb-bg: #ffffff;
+    --player-icon-hover: #dee2e6;
+}
+
+/* ===== Estilos Globales ===== */
+body {
+    font-family: var(--font-family-sans-serif);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+    /* Padding ajustado dinámicamente en JS según altura del player */
+    padding-bottom: 100px; /* Valor inicial por defecto */
+    overflow-x: hidden;
+}
+
+.main-container {
+    padding-top: 70px; /* Espacio para el botón de menú */
+}
+
+/* ===== Barra de Desplazamiento ===== */
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+*::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: 4px; /* Bordes redondeados */
+}
+*::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 4px;
+}
+*::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+}
+/* Para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+
+/* ===== Paneles Principales ===== */
+.left-panel, .right-panel {
+    background-color: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: .5rem;
+    transition: background-color 0.3s, border-color 0.3s;
+    /* Altura mínima calculada para llenar pantalla menos header y player (ajustar si es necesario) */
+    min-height: calc(100vh - 70px - 100px - 40px); /* 70 header, 100 player aprox, 40 margen/padding */
+    display: flex;
+    flex-direction: column;
+}
+
+.left-panel {
+    height: auto; /* Crece según contenido */
+}
+
+.right-panel {
+   /* Panel derecho pegajoso en escritorio */
+   position: sticky;
+   top: 70px; /* Debajo del botón de menú */
+   height: calc(100vh - 70px - 20px); /* Altura de la ventana menos el espacio superior */
+   overflow-y: auto; /* Scroll interno */
+}
+
+#subtitleContainer {
+    font-family: var(--font-family-serif);
+    font-size: clamp(1.1rem, 3.5vw, 1.5rem); /* Tamaño adaptable: min 1.1rem, ideal 3.5vw, max 1.5rem */
+    line-height: 1.8; /* Mayor interlineado para lectura */
+    flex-grow: 1;
+    overflow-y: auto; /* Scroll si el texto es muy largo */
+    /* Max-height para evitar que el panel izquierdo sea excesivamente alto */
+    max-height: calc(100vh - 70px - 100px - 80px); /* Ajustar según paddings */
+    color: var(--text-color); /* Asegurar color de texto */
+}
+
+#subtitleContainer span {
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease;
+    display: inline-block;
+    padding: 1px 3px; /* Padding ligero */
+    margin: 0 1px 2px 1px; /* Margen pequeño */
+    border-radius: 3px;
+    line-height: 1.5;
+    -webkit-tap-highlight-color: transparent; /* Evitar resaltado azul en móvil */
+    position: relative; /* Para pseudo-elemento de hold */
+}
+#subtitleContainer span:hover {
+    background-color: var(--highlight-bg);
+}
+#subtitleContainer span.highlight {
+    background-color: var(--highlight-bg);
+    color: var(--highlight-text);
+    box-shadow: 0 0 5px var(--highlight-bg);
+}
+#subtitleContainer span.word-loading {
+    background-color: var(--word-loading-bg); /* Feedback visual carga */
+    box-shadow: inset 0 0 5px var(--word-loading-bg);
+}
+/* Indicador visual para tap-hold (móvil) */
+#subtitleContainer span.holding::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -8px; /* Debajo de la palabra */
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: var(--link-color);
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: pulse 1s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.7; }
+  50% { transform: translateX(-50%) scale(1.3); opacity: 1; }
+}
+
+
+.initial-message, .initial-dict-message {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 1rem;
+    color: var(--muted-color);
+    padding: 1rem;
+}
+.initial-dict-message i { color: var(--muted-color); } /* Icono del color muted */
+
+/* ===== Menú Desplegable ===== */
+.btn-menu-toggle {
+    z-index: 1101; /* Encima del menú */
+    background-color: var(--panel-bg); /* Fondo para que resalte */
+    border-color: var(--panel-border);
+    color: var(--text-color);
+}
+.btn-menu-toggle:hover {
+    background-color: var(--highlight-bg);
+}
+
+#menuDesplegable {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    background-color: var(--menu-bg);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-bottom: 1px solid var(--menu-border);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding-top: 60px; /* Espacio para el botón */
+    max-height: 100vh; /* Evitar que sea más alto que la pantalla */
+    overflow-y: auto; /* Scroll si el contenido es mucho */
+}
+.menu-content {
+    background-color: transparent;
+}
+
+/* File Inputs Mejorados */
+.file-input label {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+.file-input label i { margin-right: 0.3rem; }
+
+.file-input .form-control {
+    background-color: var(--bg-color); /* Fondo sutilmente diferente */
+    border: 1px solid var(--panel-border);
+    color: var(--text-color);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.9rem;
+}
+.file-input .form-control:hover {
+    border-color: var(--link-color);
+}
+.file-input .form-control:focus {
+    border-color: var(--link-color);
+    box-shadow: 0 0 0 2px rgba(var(--bs-link-color-rgb), 0.25);
+    background-color: var(--panel-bg); /* Fondo al enfocar */
+}
+.file-input .form-control::file-selector-button {
+    /* Estilos para el botón "Browse/Choose File" (depende del navegador) */
+    padding: 0.4rem 0.75rem;
+    margin-right: 0.75rem;
+    margin-left: -0.75rem; /* Ajuste para pegarlo a la izquierda */
+    margin-top: -0.5rem; /* Ajuste vertical */
+    margin-bottom: -0.5rem; /* Ajuste vertical */
+    background-color: var(--panel-bg);
+    border: none;
+    border-right: 1px solid var(--panel-border);
+    color: var(--link-color);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-weight: 500;
+}
+.file-input .form-control::file-selector-button:hover {
+    background-color: var(--highlight-bg);
+}
+
+.file-status-message {
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+    min-height: 1.2em; /* Espacio reservado para que no salte el layout */
+}
+.file-status-message.text-success { color: var(--bs-success) !important; }
+.file-status-message.text-danger { color: var(--bs-danger) !important; }
+
+/* Botones de Tema */
+#menuDesplegable .btn-outline-secondary {
+    color: var(--muted-color);
+    border-color: var(--panel-border);
+    padding: 0.25rem 0.6rem; /* Más compactos */
+}
+#menuDesplegable .btn-outline-secondary:hover,
+#menuDesplegable .btn-outline-secondary.active { /* Estilo activo opcional */
+    color: var(--text-color);
+    background-color: var(--highlight-bg);
+    border-color: var(--muted-color);
+}
+#menuDesplegable .btn-outline-secondary i { margin-right: 0.25rem; }
+
+
+/* ===== Panel Derecho - Diccionario (Escritorio) ===== */
+#dictionaryContainer {
+     height: 100%;
+     overflow-y: auto;
+     padding: 1rem; /* Añadir padding interno */
+}
+.definition-card {
+    border: 1px solid var(--card-border);
+    border-radius: 0.5rem;
+    background-color: var(--panel-bg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    text-align: left;
+    margin-bottom: 1rem; /* Espacio si hay múltiples cards */
+}
+
+.definition-header {
+    padding: 0.8rem 1rem; /* Padding reducido */
+    border-bottom: 1px solid var(--header-border);
+    display: flex;
+    justify-content: space-between; /* Separa palabra y botón */
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.definition-word {
+    font-size: 1.3rem; /* Tamaño ajustado */
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.translation {
+    font-size: 0.95rem;
+    color: var(--muted-color);
+    margin-top: 0.1rem; /* Menos espacio */
+}
+.play-pronunciation-btn {
+    color: var(--link-color);
+    padding: 0.2rem 0.4rem;
+}
+.play-pronunciation-btn:hover {
+    color: var(--text-color);
+    background-color: var(--highlight-bg);
+}
+
+
+.definition-content {
+    padding: 0.5rem 1rem 1rem 1rem; /* Ajustado */
+}
+
+.meaning-section {
+    margin-bottom: 1.2rem;
+}
+.meaning-section:last-child {
+    margin-bottom: 0;
+}
+
+.part-of-speech {
+    font-weight: 600;
+    font-style: italic;
+    margin-bottom: 0.6rem;
+    color: var(--pos-color);
+    font-size: 0.85rem; /* Más pequeño */
+    text-transform: capitalize;
+    border-bottom: 1px dashed var(--panel-border);
+    padding-bottom: 0.3rem;
+}
+
+.definitions-list {
+    padding-left: 0; /* Sin padding izquierdo, usamos item */
+    list-style: none;
+}
+
+.definition-item {
+    margin-bottom: 0.8rem; /* Menos espacio */
+    position: relative;
+    padding-left: 1.3rem; /* Espacio para el bullet */
+}
+.definition-item::before {
+    content: '•';
+    position: absolute;
+    left: 0.2rem; /* Más cerca */
+    top: 0.1em; /* Alineación vertical */
+    color: var(--link-color);
+    font-weight: bold;
+    font-size: 0.9em; /* Bullet un poco más pequeño */
+}
+
+.definition-text {
+    margin-bottom: 0.3rem;
+    font-size: 0.9rem;
+}
+
+.example {
+    padding: 0.5rem 0.7rem;
+    border-radius: 0.25rem;
+    margin-top: 0.4rem;
+    background-color: var(--example-bg);
+    color: var(--example-color);
+    font-size: 0.85rem;
+    font-style: italic;
+    border-left: 3px solid var(--pos-color);
+}
+.example i {
+    margin-right: 0.4rem;
+    opacity: 0.7;
+    vertical-align: middle; /* Alinear icono */
+}
+
+.definition-error {
+    padding: 0.8rem 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--error-bg);
+    color: var(--error-color);
+    border: 1px solid var(--error-color);
+    text-align: center;
+    font-size: 0.9rem;
+}
+.definition-error i { margin-right: 0.4rem; }
+
+
+/* ===== Diccionario Flotante (Móvil) ===== */
+.floating-dictionary {
+    position: fixed;
+    /* Se ajustará en JS para estar sobre el player */
+    bottom: 110px; /* Valor inicial, se ajustará */
+    left: 10px;
+    right: 10px;
+    max-width: calc(100vw - 20px); /* Ancho máximo */
+    margin: 0 auto; /* Centrado */
+    background-color: var(--panel-bg);
+    color: var(--text-color);
+    border: 1px solid var(--panel-border);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    padding-top: 2.8rem; /* Espacio para botón cerrar */
+    z-index: 1060;
+    display: none;
+    max-height: 45vh; /* Un poco más alto */
+    overflow-y: auto;
+    transition: opacity 0.3s ease, transform 0.3s ease, bottom 0.3s ease;
+    transform: translateY(20px);
+    opacity: 0;
+}
+
+.floating-dictionary.show {
+    display: block;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.close-float-dict {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    padding: 0.25rem 0.5rem;
+    color: var(--muted-color);
+    opacity: 0.8;
+}
+.close-float-dict:hover {
+    color: var(--text-color);
+    opacity: 1;
+}
+
+#floatingDictionaryContent .floating-word {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--pos-color);
+    margin-bottom: 0.2rem;
+}
+#floatingDictionaryContent .floating-translation {
+    font-size: 0.95rem;
+    color: var(--muted-color);
+    margin-bottom: 0.6rem;
+    font-style: italic;
+}
+#floatingDictionaryContent .floating-def {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    padding-left: 1.1rem;
+    position: relative;
+}
+#floatingDictionaryContent .floating-def::before {
+     content: '•';
+     position: absolute;
+     left: 0.1rem;
+     top: 0.1em;
+     font-size: 0.9em;
+     color: var(--link-color);
+}
+#floatingDictionaryContent .play-pronunciation-btn {
+    margin-top: 0.5rem;
+    font-size: 0.9rem; /* Más pequeño */
+    padding: 0.2rem 0.5rem;
+}
+#floatingDictionaryContent .play-pronunciation-btn i { margin-right: 0.3rem; }
+
+
+/* ===== Reproductor de Audio Fijo ===== */
+.custom-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    min-height: 80px; /* Altura mínima */
+    background-color: var(--player-bg);
+    color: var(--player-text);
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Borde claro sutil */
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 1055;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
+    transition: height 0.3s ease, padding 0.3s ease; /* Transición suave */
+}
+
+.cover-art {
+    width: 50px; /* Ligeramente más pequeño */
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.player-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 1;
+    min-width: 100px;
+}
+
+.player-details .title,
+.player-details .artist {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+}
+
+.title {
+    font-size: 0.95rem;
+    font-weight: 500; /* No tan grueso */
+    color: var(--player-text);
+}
+
+.artist {
+    font-size: 0.8rem;
+    color: var(--player-text-muted);
+}
+
+.player-controls-wrapper {
+    display: flex;
+    flex-direction: column; /* Apilar timeline y controles */
+    align-items: center;
+    gap: 0.2rem; /* Espacio mínimo entre timeline y botones */
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.player-timeline {
+    width: 100%;
+    max-width: 600px; /* Ancho máximo para la barra */
+    margin: 0 auto; /* Centrar si es más corta */
+}
+.player-timeline span {
+    font-size: 0.8rem;
+    color: var(--player-text-muted);
+    min-width: 35px;
+    text-align: center;
+}
+.timeline.form-range {
+    --bs-form-range-track-bg: var(--player-timeline-bg);
+    --bs-form-range-thumb-bg: var(--player-thumb-bg);
+    --bs-form-range-thumb-border: none;
+    --bs-form-range-thumb-focus-box-shadow: 0 0 0 0.25rem rgba(var(--player-thumb-bg), 0.25); /* Sombra focus */
+    --bs-form-range-thumb-active-bg: var(--player-thumb-bg);
+    height: 6px; /* Más gruesa */
+}
+.timeline.form-range:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.timeline.form-range::-webkit-slider-thumb {
+    width: 14px; /* Más grande */
+    height: 14px;
+    margin-top: -4px; /* Centrar verticalmente */
+}
+.timeline.form-range::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+}
+
+.player-main-controls {
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 600px; /* Mismo ancho que timeline */
+    margin: 0 auto;
+}
+
+.player-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.player-buttons button {
+    background: transparent;
+    border: none;
+    color: var(--player-text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.3rem; /* Padding clickeable */
+    transition: color 0.2s ease, transform 0.1s ease;
+    line-height: 1;
+}
+.player-buttons button:hover {
+    color: var(--player-icon-hover);
+}
+.player-buttons button:active {
+    transform: scale(0.9); /* Efecto click */
+}
+.player-buttons button.btn-play-pause i {
+    font-size: 2rem; /* Play/Pausa más grande */
+}
+.player-buttons button.btn-repeat.active { /* Estilo para repetición activa */
+    color: var(--bs-info); /* Un color distintivo (azul claro de Bootstrap) */
+}
+
+
+.player-extras {
+    display: flex;
+    align-items: center;
+    /* gap: 0.75rem; */ /* No necesita gap si solo hay un dropdown */
+    flex-shrink: 0;
+}
+.player-extras .dropdown-menu {
+    font-size: 0.9rem;
+    min-width: 160px; /* Ancho mínimo para que quepa bien */
+}
+.player-extras .dropdown-item.speed-item.active {
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.15); /* Un poco más visible */
+    color: var(--player-text);
+}
+.volume-slider.form-range {
+    width: 100px; /* Más corto */
+    height: 5px;
+    vertical-align: middle;
+}
+.player-extras .dropdown-menu i { /* Iconos de volumen */
+    color: var(--player-text-muted);
+    vertical-align: -0.125em; /* Alinear con slider */
+}
+
+/* ===== Loading Overlay ===== */
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1200;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s 0.3s linear; /* Transición suave */
+}
+.loading-overlay.show {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0s linear;
+}
+
+
+/* ===== Media Queries para Responsividad ===== */
+
+/* Tablets (Bootstrap 'md' a 'lg') */
+@media (max-width: 991.98px) {
+    .right-panel {
+        display: none; /* Ocultar panel derecho */
+    }
+    .left-panel {
+        min-height: calc(100vh - 70px - 100px - 20px); /* Ajustar altura mínima */
+    }
+     #subtitleContainer {
+       font-size: clamp(1rem, 3vw, 1.3rem); /* Ligeramente más pequeño en tablet */
+       max-height: calc(100vh - 70px - 100px - 60px); /* Ajustar max-height */
+    }
+    .custom-player {
+        min-height: 75px;
+        padding: 0.5rem 0.75rem;
+    }
+     .cover-art { width: 45px; height: 45px; }
+     .title { font-size: 0.9rem; }
+     .artist { font-size: 0.75rem; }
+     .player-buttons button { font-size: 1.4rem; }
+     .player-buttons button.btn-play-pause i { font-size: 1.8rem; }
+}
+
+/* Móviles (< 768px) */
+@media (max-width: 767.98px) {
+     body {
+        /* Padding inferior gestionado por JS */
+        padding-bottom: 80px; /* Valor inicial menor */
+    }
+    .main-container {
+        padding-top: 60px; /* Botón menú más pequeño */
+    }
+     .left-panel {
+         min-height: auto;
+         margin-top: 1rem;
+         padding: 10px;
+         border: none; /* Quitar borde en móvil? */
+         background-color: transparent; /* Fondo transparente? */
+     }
+     #subtitleContainer {
+         padding: 5px; /* Menos padding interno */
+         max-height: calc(100vh - 60px - 80px - 30px); /* Ajustar max-height */
+         font-size: clamp(1rem, 4vw, 1.2rem); /* Tamaño adecuado para móvil */
+         line-height: 1.7;
+     }
+
+     .custom-player {
+         padding: 0.5rem;
+         gap: 0.5rem;
+         min-height: 70px; /* Aún más compacto */
+         flex-wrap: nowrap; /* Intentar mantener en una línea */
+         align-items: stretch; /* Alinear elementos verticalmente */
+     }
+    .cover-art {
+        display: none; /* Ocultar portada */
+    }
+     .player-details {
+         min-width: 60px; /* Aún más pequeño */
+         justify-content: center; /* Centrar texto verticalmente */
+         flex-grow: 1; /* Permitir que ocupe espacio */
+     }
+     .title { font-size: 0.8rem; }
+     .artist { display: none; } /* Ocultar artista */
+
+     .player-controls-wrapper {
+        /* Ocupa el espacio restante, al lado de detalles y extras */
+        flex-direction: row; /* Controles principales en fila */
+        flex-wrap: wrap; /* Permitir que timeline y botones se reorganicen */
+        justify-content: center;
+        align-items: center;
+        flex-grow: 5; /* Darle más espacio */
+        gap: 0.3rem;
+     }
+    .player-timeline {
+        order: 1; /* Timeline primero */
+        width: 100%; /* Ocupar ancho completo de su contenedor */
+        max-width: none;
+        padding: 0 5px; /* Pequeño padding lateral */
+        margin: 0;
+    }
+     .player-main-controls {
+         order: 2; /* Botones y extras después */
+         width: 100%;
+         justify-content: space-between; /* Distribuir botones y extras */
+         gap: 0.5rem;
+         max-width: none;
+         padding: 0 5px; /* Pequeño padding lateral */
+     }
+    .player-buttons {
+        gap: 0.3rem;
+        flex-shrink: 0; /* No encoger botones */
+    }
+    .player-buttons button { font-size: 1.3rem; padding: 0.2rem; }
+    .player-buttons button.btn-play-pause i { font-size: 1.6rem; }
+
+
+    .timeline.form-range { height: 5px; }
+    .timeline.form-range::-webkit-slider-thumb { width: 13px; height: 13px; margin-top: -4px; }
+    .timeline.form-range::-moz-range-thumb { width: 13px; height: 13px; }
+    .player-timeline span { font-size: 0.7rem; min-width: 30px;}
+
+     .player-extras {
+        /* Se queda al final de player-main-controls */
+        margin-left: 0; /* Quitar margen auto */
+     }
+     .player-extras .dropdown-menu { /* Menú se abre hacia arriba */
+        transform: translateY(-100%);
+        top: auto !important;
+        bottom: 100% !important;
+        margin-bottom: 5px;
+     }
+     .player-extras .volume-slider.form-range { width: 80px; }
+
+
+    .floating-dictionary {
+        /* Posición gestionada por JS */
+        left: 5px;
+        right: 5px;
+        max-width: calc(100vw - 10px);
+        padding: 0.75rem;
+        padding-top: 2.5rem;
+        font-size: 0.9rem;
+    }
+    #floatingDictionaryContent .floating-word { font-size: 1.1rem; }
+    #floatingDictionaryContent .floating-translation { font-size: 0.9rem; }
+    #floatingDictionaryContent .floating-def { font-size: 0.85rem; }
+}
+
+/* Ajuste fino para pantallas muy pequeñas (< 400px) */
+@media (max-width: 400px) {
+    .player-buttons button { font-size: 1.2rem; }
+    .player-buttons button.btn-play-pause i { font-size: 1.5rem; }
+    .player-extras .btn-sm { padding: 0.2rem 0.4rem; font-size: 0.9rem; }
+    .player-timeline span { display: none; } /* Ocultar tiempos si no caben */
+    .player-timeline { gap: 0; }
+    .timeline.form-range { margin: 0 !important; }
+}
